@@ -8,10 +8,12 @@ dependencies:
     - sudo apt-get install elixir esl-erlang
     - yes | mix deps.get
     - mix local.rebar
+database:
+  override:
+    sudo -u postgres psql -c "CREATE USER carwow WITH CREATEDB PASSWORD 'carwow';"
 test:
   override:
     - mix test
-
 deployment:
   staging:
     branch: master
