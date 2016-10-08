@@ -10,7 +10,7 @@ dependencies:
     - mix local.rebar
 database:
   override:
-    sudo -u postgres psql -c "CREATE USER carwow WITH CREATEDB PASSWORD 'carwow';"
+    - sudo -u postgres psql -c "CREATE USER carwow WITH CREATEDB PASSWORD 'carwow';"
 test:
   override:
     - mix test
