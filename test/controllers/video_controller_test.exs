@@ -58,6 +58,26 @@ defmodule Rumbl.VideoControllerTest do
     assert video_count(Video) == count_before
   end
 
+  @tag login_as: "max"
+  test "authorises actions against access by other users", %{user: owner, conn: conn} do
+    video = insert_video(owner, @valid_attrs)
+    non_owner = insert_user(username: "unauthorised")
+    conn = assign(conn, :current_user, non_owner)
+
+    assert_error_sent :not_found, fn ->
+      get(conn, video_path(conn, :show, video))
+    end
+    assert_error_sent :not_found, fn->
+      get(conn, video_path(conn, :edit, video))
+    end
+    assert_error_sent :not_found, fn->
+      get(conn, video_path(conn, :update, video, video: @valid_attrs))
+    end
+    assert_error_sent :not_found, fn->
+      get(conn, video_path(conn, :delete, video))
+    end
+  end
+
 
 #
 #   alias Rumbl.Video
